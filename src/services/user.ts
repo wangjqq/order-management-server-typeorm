@@ -47,4 +47,11 @@ export class UserService {
 
     return null
   }
+
+  // 更新用户
+  async updateUser(newUser: User): Promise<User> {
+    const user = await this.getUserById(newUser.user_id)
+    await this.userRepository.save({ ...user, ...newUser })
+    return user
+  }
 }

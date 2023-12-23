@@ -16,9 +16,17 @@ export class User {
   @Column({ type: 'varchar', length: 255 })
   email: string
 
-  @CreateDateColumn()
+  @Column({ nullable: true }) // 允许为空，因为第一次登录时可能为 null
+  lastLoginAt: Date
+
+  @CreateDateColumn({ precision: 0, type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(0)' })
   created_at: Date
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({
+    precision: 0,
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(0)',
+    onUpdate: 'CURRENT_TIMESTAMP(0)',
+  })
   updated_at: Date
 }
