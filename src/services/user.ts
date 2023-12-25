@@ -1,10 +1,14 @@
 import { comparePasswords, hashPassword } from '../utils/hash'
 import { User } from '../entity/User'
 import { AppDataSource } from '../data-source'
+import { FileDir } from '../entity/FileDir'
+import { UUID } from 'typeorm/driver/mongodb/bson.typings'
+import { randomUUID } from 'crypto'
 
 export class UserService {
   // 获取用户仓库
   private userRepository = AppDataSource.getRepository(User)
+  private fileDirRepository = AppDataSource.getRepository(FileDir)
 
   // 创建用户
   async createUser(username: string, password: string, email: string): Promise<User> {
@@ -13,7 +17,13 @@ export class UserService {
     user.password_hash = await hashPassword(password)
     user.email = email
 
-    return await this.userRepository.save(user)
+    const fileDir = new FileDir()
+    fileDir.id = randomUUID()
+    fileDir.name = '根目录'
+    const newUser = await this.userRepository.save(user)
+    fileDir.userId = newUser.user_id
+    await this.fileDirRepository.save(fileDir)
+    return newUser
   }
 
   // 根据用户ID获取用户

@@ -7,31 +7,35 @@ import {
   TreeParent,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
+  OneToMany,
+  PrimaryColumn,
 } from 'typeorm'
+import { User } from './User'
 
 @Entity()
-@Tree('closure-table')
-export class FileTree {
-  @PrimaryGeneratedColumn()
-  id: number
+export class File {
+  @PrimaryColumn()
+  id: string
 
   @Column()
   name: string
 
-  @Column()
+  @Column({ nullable: true })
   mimeType: string
 
-  @Column()
+  @Column({ nullable: true })
   size: number
 
-  @Column()
+  @Column({ nullable: true })
   path: string
 
-  @TreeChildren()
-  children: FileTree[]
+  @Column()
+  dirId: string
 
-  @TreeParent()
-  parent: FileTree
+  @Column()
+  userId: number
 
   @CreateDateColumn()
   createdAt: Date

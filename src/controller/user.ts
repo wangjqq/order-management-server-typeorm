@@ -10,14 +10,13 @@ export const login = async (req: Request, res: Response) => {
   const userService = new UserService()
   const user = await userService.validateUser(username, password)
 
-  user.lastLoginAt = new Date()
-  userService.updateUser(user) // 保存到数据库
-
   if (user) {
+    user.lastLoginAt = new Date()
+    userService.updateUser(user) // 保存到数据库
     const token = generateToken(user)
-    res.json({ message: '登陆成功', user, token })
+    res.json({ msg: '登陆成功', data: { user, token } })
   } else {
-    res.json({ code: 401, message: '请检查用户名或密码' })
+    res.json({ code: 400, msg: '请检查用户名或密码' })
   }
 }
 
@@ -27,22 +26,24 @@ export const createUser = async (req: Request, res: Response) => {
   const userService = new UserService()
   const hasUser = await userService.getUserByUsernameOrEmail(username, email)
   if (hasUser) {
-    res.json({ code: 400, message: '用户已存在' })
+    res.json({ code: 400, msg: '用户已存在' })
     return
   }
   const user = await userService.createUser(username, password, email)
-  res.json({ code: 200, message: '注册成功', data: { user } })
+  res.json({ code: 200, msg: '注册成功', data: { user } })
 }
 
 // 获取所有用户
 export const getAllUsers = async (req: Request, res: Response) => {
   const userService = new UserService()
   const user = await userService.getAllUsers()
-  res.json({ code: 200, message: '', data: { user } })
+  res.json({ code: 200, msg: '', data: { user } })
 }
 
 // 检查用户是否登录
-export const checkUser = (req: any, res: Response) => {
+export const checkUser = async (req: any, res: Response) => {
   // 用户已登录，req.user 包含解码后的用户信息
-  res.json({ code: 200, message: '登陆成功', data: { user: req.user } })
+  const userService = new UserService()
+  const user = await userService.getUserByUsername(req.user.username)
+  res.json({ code: 200, data: { user } })
 }

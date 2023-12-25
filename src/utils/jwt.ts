@@ -11,7 +11,7 @@ export function generateToken(user) {
   }
 
   const options = {
-    expiresIn: '24h', // 令牌的有效期
+    expiresIn: '30m', // 令牌的有效期
   }
 
   return jwt.sign(payload, secretKey, options)
@@ -24,13 +24,13 @@ export function authenticateToken(req, res, next) {
   if (token) {
     jwt.verify(token, secretKey, (err, decoded) => {
       if (err) {
-        return res.json({ code: 401, message: '登录过期,请先登录再进行操作' })
+        return res.json({ code: 401, msg: '登录过期,请先登录再进行操作' })
       } else {
         req.user = decoded // 将解码后的用户信息保存在请求对象中
         next()
       }
     })
   } else {
-    res.json({ code: 401, message: '请先登录再进行操作' })
+    res.json({ code: 401, msg: '请先登录再进行操作' })
   }
 }

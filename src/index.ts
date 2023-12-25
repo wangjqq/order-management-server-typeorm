@@ -1,16 +1,21 @@
 import express, { Request, Response } from 'express'
 import { AppDataSource } from './data-source'
-import { User } from './entity/User'
 import userRoutes from './routers/user'
+import cors from 'cors'
+import orderRoutes from './routers/order'
+import fileRoutes from './routers/file'
 
 AppDataSource.initialize()
   .then(async () => {
     // 创建和设置Express应用程序
     const app = express()
+    app.use(cors())
     app.use(express.json())
     app.use(express.urlencoded({ extended: true })) // 解析表单数据
 
-    app.use('/users', userRoutes)
+    app.use('/user', userRoutes)
+    app.use('/order', orderRoutes)
+    app.use('/file', fileRoutes)
 
     // 启动Express服务器
     app.listen(3000, () => {
