@@ -1,6 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, CreateDateColumn } from 'typeorm'
-import { OrderDetail } from './OrderDetail'
-import { Customer } from './Customer'
 
 @Entity()
 export class Order {
@@ -16,6 +14,14 @@ export class Order {
   @Column()
   OrderStatus: string
 
+  // 订单价格
+  @Column()
+  OrderPrice: number
+
+  // 预计发货时间
+  @Column()
+  expectedDeliverTime: Date
+
   // 总计数量
   @Column()
   TotalAmount: number
@@ -24,11 +30,15 @@ export class Order {
   @Column()
   ShippingAddress: string
 
-  // 关联订单详情id
-  @OneToMany(() => OrderDetail, (orderDetail: any) => orderDetail.order)
-  orderDetails: OrderDetail[]
-
   // 关联顾客
-  @ManyToOne(() => Customer, (customer: any) => customer.orders)
-  customer: Customer = new Customer()
+  @Column()
+  customerId: number
+
+  // 关联商品
+  @Column()
+  productId: number
+
+  // 关联用户
+  @Column()
+  userId: number
 }

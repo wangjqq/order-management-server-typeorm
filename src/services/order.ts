@@ -12,18 +12,15 @@ export class OrderService {
 
   // 新增订单
   async createOrder(orderData: any): Promise<void> {
-    const { orderStatus, totalAmount, shippingAddress, orderDetails, customerId } = orderData
+    const { orderStatus, totalAmount, shippingAddress, orderDetails, customerId, userId } = orderData
 
     const order = new Order()
     order.OrderStatus = orderStatus
     order.TotalAmount = totalAmount
     order.ShippingAddress = shippingAddress
 
-    const customer = await this.customerRepository.findOne(customerId)
-    if (!customer) {
-      throw new Error('Customer not found')
-    }
-    order.customer = customer
+    order.customerId = customerId
+    order.userId = userId
 
     await this.orderRepository.save(order)
 

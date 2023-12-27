@@ -1,5 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm'
-import { OrderDetail } from './OrderDetail'
 
 @Entity()
 export class Product {
@@ -14,7 +13,4 @@ export class Product {
 
   @Column()
   UnitPrice: number
-
-  @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.product)
-  orderDetails: OrderDetail[]
 }
