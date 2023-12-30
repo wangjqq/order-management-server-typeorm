@@ -7,8 +7,8 @@ import { randomUUID } from 'crypto'
 
 export class UserService {
   // 获取用户仓库
-  private userRepository = AppDataSource.getRepository(User)
-  private fileDirRepository = AppDataSource.getRepository(FileDir)
+  private readonly userRepository = AppDataSource.getRepository(User)
+  private readonly fileDirRepository = AppDataSource.getRepository(FileDir)
 
   // 创建用户
   async createUser(username: string, password: string, email: string): Promise<User> {
