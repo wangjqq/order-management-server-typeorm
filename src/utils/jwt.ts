@@ -11,7 +11,7 @@ export function generateToken(user) {
   }
 
   const options = {
-    expiresIn: '30m', // 令牌的有效期
+    expiresIn: '24h', // 令牌的有效期
   }
 
   return jwt.sign(payload, secretKey, options)

@@ -15,6 +15,7 @@ export class Customer {
   @Column()
   Address: string
 
-  // @OneToMany(() => Order, (order) => order.customer)
-  // orders: Order[]
+  // 关联用户
+  @Column()
+  userId: number
 }

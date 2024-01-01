@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm'
 
 @Entity()
 export class Product {
@@ -8,9 +8,23 @@ export class Product {
   @Column()
   ProductName: string
 
-  @Column()
+  @Column({ nullable: true })
   Description: string
 
-  @Column()
+  @Column({ nullable: true })
   UnitPrice: number
+
+  @CreateDateColumn({ precision: 0, type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(0)' })
+  created_at: Date
+
+  @UpdateDateColumn({
+    precision: 0,
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(0)',
+    onUpdate: 'CURRENT_TIMESTAMP(0)',
+  })
+  updated_at: Date
+
+  @Column()
+  userId: number
 }

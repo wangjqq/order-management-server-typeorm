@@ -37,6 +37,7 @@ export class OrderService {
     await this.orderRepository.save(order)
   }
 
+  // 新增顾客地址
   async createCustomerAddress(customerAddressData: any): Promise<void> {
     const { fullName, streetAddress, locationAddress, phoneNumber, userId, customerId } = customerAddressData
     const customerAddress = new CustomerAddress()
@@ -47,5 +48,23 @@ export class OrderService {
     customerAddress.userId = userId
     customerAddress.customerId = customerId
     await this.customerAddressRepository.save(customerAddress)
+  }
+
+  // 查询订单
+  async getOrders({ userId }: any) {
+    return await this.orderRepository.find({
+      where: {
+        userId: userId,
+      },
+    })
+  }
+
+  // 查询顾客
+  async getCustomerAddress({ userId }: any) {
+    return await this.customerAddressRepository.find({
+      where: {
+        userId: userId,
+      },
+    })
   }
 }
