@@ -37,9 +37,14 @@ export class File {
   @Column()
   userId: number
 
-  @CreateDateColumn()
-  createdAt: Date
+  @CreateDateColumn({ precision: 0, type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(0)' })
+  created_at: Date
 
-  @UpdateDateColumn()
-  updatedAt: Date
+  @UpdateDateColumn({
+    precision: 0,
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(0)',
+    onUpdate: 'CURRENT_TIMESTAMP(0)',
+  })
+  updated_at: Date
 }

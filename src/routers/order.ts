@@ -1,11 +1,9 @@
 import express from 'express'
-import { createCustomerAddress, createOrder, getOrders, getCustomerAddress } from '../controller/order'
+import { createOrder, getOrders, getCustomerAddress } from '../controller/order'
 
 const orderRoutes = express.Router()
 
 orderRoutes.post('/createOrder', createOrder)
 orderRoutes.get('/getOrders', getOrders)
-orderRoutes.post('/createCustomerAddress', createCustomerAddress)
-orderRoutes.get('/getCustomerAddress', getCustomerAddress)
 
 export default orderRoutes

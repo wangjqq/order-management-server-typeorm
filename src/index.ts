@@ -5,6 +5,7 @@ import cors from 'cors'
 import orderRoutes from './routers/order'
 import fileRoutes from './routers/file'
 import productRoutes from './routers/product'
+import customerRoutes from './routers/customer'
 
 AppDataSource.initialize()
   .then(async () => {
@@ -18,6 +19,7 @@ AppDataSource.initialize()
     app.use('/order', orderRoutes)
     app.use('/file', fileRoutes)
     app.use('/product', productRoutes)
+    app.use('/customer', customerRoutes)
 
     // 启动Express服务器
     app.listen(3000, () => {

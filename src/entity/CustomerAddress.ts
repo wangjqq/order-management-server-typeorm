@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm'
 
 @Entity()
 export class CustomerAddress {
@@ -25,11 +25,18 @@ export class CustomerAddress {
   @Column({ length: 20 })
   phoneNumber: string
 
-  // 关联顾客
-  @Column()
-  customerId: number
-
   // 关联用户
   @Column()
   userId: number
+
+  @CreateDateColumn({ precision: 0, type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(0)' })
+  created_at: Date
+
+  @UpdateDateColumn({
+    precision: 0,
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(0)',
+    onUpdate: 'CURRENT_TIMESTAMP(0)',
+  })
+  updated_at: Date
 }

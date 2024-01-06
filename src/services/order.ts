@@ -11,7 +11,7 @@ export class OrderService {
   // 新增订单
   async createOrder(orderData: any): Promise<void> {
     const {
-      orderStatus,
+      OrderStatus,
       expectedDeliverTime,
       OrderPrice,
       TotalAmount,
@@ -19,11 +19,11 @@ export class OrderService {
       productId,
       customerId,
       userId,
-      customerAddressId,
+      CustomerAddressId,
     } = orderData
 
     const order = new Order()
-    order.OrderStatus = orderStatus
+    order.OrderStatus = OrderStatus
     order.expectedDeliverTime = expectedDeliverTime
     order.OrderPrice = OrderPrice
     order.TotalAmount = TotalAmount
@@ -32,22 +32,9 @@ export class OrderService {
     order.productId = productId
     order.customerId = customerId
     order.userId = userId
-    order.CustomerAddressId = customerAddressId
+    order.CustomerAddressId = CustomerAddressId
 
     await this.orderRepository.save(order)
-  }
-
-  // 新增顾客地址
-  async createCustomerAddress(customerAddressData: any): Promise<void> {
-    const { fullName, streetAddress, locationAddress, phoneNumber, userId, customerId } = customerAddressData
-    const customerAddress = new CustomerAddress()
-    customerAddress.fullName = fullName
-    customerAddress.streetAddress = streetAddress
-    customerAddress.locationAddress = locationAddress
-    customerAddress.phoneNumber = phoneNumber
-    customerAddress.userId = userId
-    customerAddress.customerId = customerId
-    await this.customerAddressRepository.save(customerAddress)
   }
 
   // 查询订单

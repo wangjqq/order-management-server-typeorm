@@ -1,4 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, CreateDateColumn } from 'typeorm'
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm'
 
 @Entity()
 export class Order {
@@ -9,6 +17,14 @@ export class Order {
   // 订单创建时间
   @CreateDateColumn({ precision: 0, type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(0)' })
   OrderDate: Date
+
+  @UpdateDateColumn({
+    precision: 0,
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(0)',
+    onUpdate: 'CURRENT_TIMESTAMP(0)',
+  })
+  updated_at: Date
 
   // 订单状态 售前 已付款 制作中 已发货 已收货 已完结 已取消
   @Column()
