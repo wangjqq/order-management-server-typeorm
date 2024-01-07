@@ -6,20 +6,24 @@ export class Customer {
   CustomerID: number
 
   // 客户名称
-  @Column()
+  @Column({ nullable: true })
   Name: string
 
   // 客户电话
-  @Column()
+  @Column({ nullable: true })
   Phone: string
 
   // 客户微信号
-  @Column()
+  @Column({ nullable: true })
   WeChat: string
 
   // 客户来源
-  @Column()
+  @Column({ nullable: true })
   Source: string
+
+  // 客户地址列表
+  @Column({ nullable: true })
+  AddressIds: string
 
   // 关联用户
   @Column()

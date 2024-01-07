@@ -8,14 +8,16 @@ export class CustomerService {
 
   // 新增客户
   async createCustomer(orderData: any): Promise<void> {
-    const { Name, Phone, WeChat, Source, userId } = orderData
+    const { Name, Phone, WeChat, Source, AddressIds, CustomerID, userId } = orderData
 
     const customer = new Customer()
     customer.Name = Name
     customer.Phone = Phone
     customer.WeChat = WeChat
     customer.Source = Source
+    customer.AddressIds = AddressIds
 
+    customer.CustomerID = CustomerID
     customer.userId = userId
 
     await this.customerRepository.save(customer)
@@ -28,6 +30,17 @@ export class CustomerService {
         userId: userId,
       },
     })
+  }
+
+  // 删除客户
+  async delCustomer({ userId, CustomerID }: any) {
+    const customer = await this.customerRepository.findOne({
+      where: {
+        userId: userId,
+        CustomerID: CustomerID,
+      },
+    })
+    return await this.customerRepository.remove(customer)
   }
 
   // 查询客户地址

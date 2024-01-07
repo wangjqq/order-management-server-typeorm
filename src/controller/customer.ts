@@ -13,6 +13,12 @@ export const getCustomers = async (req: Request, res: Response) => {
   res.json({ msg: '获取客户列表成功', data })
 }
 
+export const delCustomer = async (req: Request, res: Response) => {
+  const customerService = new CustomerService()
+  const data = await customerService.delCustomer(req.body)
+  res.json({ msg: '删除顾客成功', data })
+}
+
 export const getCustomerAddresss = async (req: Request, res: Response) => {
   const customerService = new CustomerService()
   const data = await customerService.getCustomerAddresss(req.query)

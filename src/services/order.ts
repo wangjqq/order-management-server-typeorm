@@ -6,6 +6,8 @@ import { Product } from '../entity/Product'
 
 export class OrderService {
   private orderRepository = AppDataSource.getRepository(Order)
+  private productRepository = AppDataSource.getRepository(Product)
+  private customerRepository = AppDataSource.getRepository(Customer)
   private customerAddressRepository = AppDataSource.getRepository(CustomerAddress)
 
   // 新增订单
@@ -39,11 +41,30 @@ export class OrderService {
 
   // 查询订单
   async getOrders({ userId }: any) {
-    return await this.orderRepository.find({
+    const orders: any = await this.orderRepository.find({
       where: {
         userId: userId,
       },
     })
+
+    const newOrders = await Promise.all(
+      orders.map(async (item: any) => {
+        const product = await this.productRepository.findOne({
+          where: {
+            ProductID: item.productId,
+          },
+        })
+        const customer = await this.customerRepository.findOne({
+          where: {
+            CustomerID: item.customerId,
+          },
+        })
+        item.customerName = customer.Name
+        item.productName = product.ProductName
+        return item // 返回更新后的 item
+      })
+    )
+    return newOrders
   }
 
   // 查询顾客
