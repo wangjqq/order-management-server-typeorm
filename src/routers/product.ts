@@ -5,6 +5,6 @@ const productRoutes = express.Router()
 
 productRoutes.post('/createProduct', createProduct)
 productRoutes.get('/getProducts', getProducts)
-productRoutes.delete('/delProduct', delProduct)
+productRoutes.post('/delProduct', delProduct)
 
 export default productRoutes

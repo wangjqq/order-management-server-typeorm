@@ -14,8 +14,8 @@ export class Order {
   @PrimaryGeneratedColumn()
   OrderID: number
 
-  // 订单创建时间
-  @CreateDateColumn({ precision: 0, type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(0)' })
+  // 下单时间
+  @Column({ nullable: true })
   OrderDate: Date
 
   @UpdateDateColumn({
@@ -35,7 +35,7 @@ export class Order {
   expectedDeliverTime: Date
 
   // 订单价格
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'float' })
   OrderPrice: number
 
   // 总计数量
@@ -43,7 +43,7 @@ export class Order {
   TotalAmount: number
 
   // 备注
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'text' })
   Remark: string
 
   // 关联顾客
@@ -51,7 +51,7 @@ export class Order {
   customerId: number
 
   // 关联顾客收货地址
-  @Column()
+  @Column({ nullable: true })
   CustomerAddressId: number
 
   // 关联商品

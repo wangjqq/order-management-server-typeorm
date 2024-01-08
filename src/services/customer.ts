@@ -1,3 +1,4 @@
+import { In } from 'typeorm'
 import { AppDataSource } from '../data-source'
 import { Customer } from '../entity/Customer'
 import { CustomerAddress } from '../entity/CustomerAddress'
@@ -44,11 +45,23 @@ export class CustomerService {
   }
 
   // 查询客户地址
-  async getCustomerAddresss({ userId }: any) {
-    return await this.customerAddressRepository.find({
+  async getCustomerAddresss({ userId, CustomerID }: any) {
+    const customer = await this.customerRepository.findOne({
       where: {
         userId: userId,
+        CustomerID: CustomerID,
       },
+    })
+    let whereCondition: any = {
+      userId: userId,
+    }
+
+    if (CustomerID && customer.AddressIds && customer.AddressIds.length > 0) {
+      whereCondition.id = In(JSON.parse(customer.AddressIds))
+    }
+
+    return await this.customerAddressRepository.find({
+      where: whereCondition,
     })
   }
 

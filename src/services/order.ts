@@ -18,10 +18,12 @@ export class OrderService {
       OrderPrice,
       TotalAmount,
       Remark,
+      OrderDate,
       productId,
       customerId,
       userId,
       CustomerAddressId,
+      OrderID,
     } = orderData
 
     const order = new Order()
@@ -30,11 +32,13 @@ export class OrderService {
     order.OrderPrice = OrderPrice
     order.TotalAmount = TotalAmount
     order.Remark = Remark
+    order.OrderDate = OrderDate
 
     order.productId = productId
     order.customerId = customerId
     order.userId = userId
     order.CustomerAddressId = CustomerAddressId
+    order.OrderID = OrderID
 
     await this.orderRepository.save(order)
   }
@@ -44,6 +48,9 @@ export class OrderService {
     const orders: any = await this.orderRepository.find({
       where: {
         userId: userId,
+      },
+      order: {
+        OrderID: 'DESC', // 升序排序，如需降序可使用 'DESC'
       },
     })
 
@@ -74,5 +81,16 @@ export class OrderService {
         userId: userId,
       },
     })
+  }
+
+  // 删除订单
+  async delOrder({ userId, OrderID }: any) {
+    const order = await this.orderRepository.findOne({
+      where: {
+        userId: userId,
+        OrderID: OrderID,
+      },
+    })
+    return await this.orderRepository.remove(order)
   }
 }
