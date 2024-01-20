@@ -16,7 +16,7 @@ export const uploadFile = (req: any, res: Response) => {
     }
 
     try {
-      await fileService.saveFile(file, req.body.userId, req.body.dirId)
+      await fileService.saveFile(file, req.body.userId, req.body.fileName, req.body.dirId)
       res.status(201).json({ message: 'File uploaded successfully' })
     } catch (error) {
       console.error(error)

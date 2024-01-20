@@ -19,13 +19,13 @@ export class FileService {
   // 处理文件上传
   uploadFile = this.upload.single('file')
 
-  async saveFile(newFile, userId, parentFolderId?): Promise<void> {
+  async saveFile(newFile, userId, fileName, parentFolderId?): Promise<void> {
     const user = await this.userRepository.findOne({ where: { user_id: userId } })
 
     const file = new File()
     file.id = randomUUID()
     file.userId = user.user_id
-    file.name = newFile.originalname
+    file.name = fileName
     file.mimeType = newFile.mimetype
     file.size = newFile.size.toString()
     const userFolder = `../uploads/${user.username}/`
