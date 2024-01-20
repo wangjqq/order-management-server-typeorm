@@ -28,7 +28,7 @@ export class FileService {
     file.name = fileName
     file.mimeType = newFile.mimetype
     file.size = newFile.size.toString()
-    const userFolder = `../uploads/${user.username}/`
+    const userFolder = `C:/Data/uploads/${user.username}/`
     const date = new Date().toLocaleString().replace(/[\s:/]/g, '-')
     file.path = `${userFolder}${file.id}.${file.name}` // 请确保在项目中有一个 "uploads" 文件夹用于保存上传的文件
     file.dirId = parentFolderId
