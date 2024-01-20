@@ -16,7 +16,7 @@ export const uploadFile = (req: any, res: Response) => {
     }
 
     try {
-      await fileService.saveFile(file, req.body.userId, req.body.parentFolderId)
+      await fileService.saveFile(file, req.body.userId, req.body.dirId)
       res.status(201).json({ message: 'File uploaded successfully' })
     } catch (error) {
       console.error(error)
@@ -44,7 +44,15 @@ export const createFolder = async (req: any, res: Response) => {
     res.status(500).json({ message: 'Internal Server Error' })
   }
 }
-
+export const delFolder = async (req: any, res: Response) => {
+  try {
+    const fileTree = await fileService.delFolder(req.body)
+    res.status(200).json({ message: 'File tree retrieved successfully', data: fileTree })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Internal Server Error' })
+  }
+}
 export const getFiles = async (req: any, res: Response) => {
   try {
     const files = await fileService.getFiles(req.query)

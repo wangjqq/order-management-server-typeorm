@@ -21,17 +21,16 @@ export class FileService {
 
   async saveFile(newFile, userId, parentFolderId?): Promise<void> {
     const user = await this.userRepository.findOne({ where: { user_id: userId } })
-    console.log(user)
 
     const file = new File()
     file.id = randomUUID()
     file.userId = user.user_id
     file.name = newFile.originalname
     file.mimeType = newFile.mimetype
-    file.size = newFile.size
+    file.size = newFile.size.toString()
     const userFolder = `../uploads/${user.username}/`
     const date = new Date().toLocaleString().replace(/[\s:/]/g, '-')
-    file.path = `${userFolder}${file.id}` // 请确保在项目中有一个 "uploads" 文件夹用于保存上传的文件
+    file.path = `${userFolder}${file.id}.${file.name}` // 请确保在项目中有一个 "uploads" 文件夹用于保存上传的文件
     file.dirId = parentFolderId
     await this.FileRepository.save(file)
 
@@ -43,15 +42,8 @@ export class FileService {
   }
 
   async getFileDirTree(userId): Promise<FileDir[]> {
-    const user = await this.userRepository.findOne({ where: { user_id: userId } })
-    // console.log(user)
-
-    if (!user) {
-      throw new Error('User not found')
-    }
-    const dirs = await this.FileDirRepository.find({ where: { userId } })
+    const dirs = await this.FileDirRepository.find({ where: { userId: userId } })
     return convertToTreeData(dirs)
-    // return await
   }
 
   async createFolder({ userId, folderName, parentFolderId }) {
@@ -65,6 +57,11 @@ export class FileService {
     await this.FileDirRepository.save(fileDir)
   }
 
+  async delFolder({ userId, id }) {
+    const folder = await this.FileDirRepository.findOne({ where: { id: id } })
+    await this.FileDirRepository.delete(folder)
+  }
+
   async getFiles({ userId, dirId, page, pageSize }) {
     const files = await this.FileRepository.find({
       where: {
@@ -74,8 +71,8 @@ export class FileService {
       // order: {
       //   id: 'DESC',
       // },
-      skip: (page - 1) * pageSize,
-      take: pageSize,
+      // skip: (page - 1) * pageSize,
+      // take: pageSize,
     })
     return files
   }

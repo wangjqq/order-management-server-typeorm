@@ -16,11 +16,10 @@ export class UserService {
     user.username = username
     user.password_hash = await hashPassword(password)
     user.email = email
-
     const fileDir = new FileDir()
-    fileDir.id = randomUUID()
     fileDir.name = '根目录'
     const newUser = await this.userRepository.save(user)
+    fileDir.id = newUser.user_id.toString()
     fileDir.userId = newUser.user_id
     await this.fileDirRepository.save(fileDir)
     return newUser

@@ -26,7 +26,7 @@ export class File {
   mimeType: string
 
   @Column({ nullable: true })
-  size: number
+  size: string
 
   @Column({ nullable: true })
   path: string
