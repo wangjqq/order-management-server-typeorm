@@ -62,3 +62,23 @@ export const getFiles = async (req: any, res: Response) => {
     res.status(500).json({ message: 'Internal Server Error' })
   }
 }
+export const download = async (req: any, res: Response) => {
+  try {
+    const fileStream = await fileService.download(req.query)
+    res.setHeader('Content-Disposition', `attachment; filename=${req.query.filename}`)
+    res.setHeader('Content-Type', 'application/octet-stream')
+    fileStream.pipe(res)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Internal Server Error' })
+  }
+}
+export const deleteFile = async (req: any, res: Response) => {
+  try {
+    await fileService.deleteFile(req.body, res)
+    res.status(200).json({ message: 'File tree retrieved successfully' })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Internal Server Error' })
+  }
+}

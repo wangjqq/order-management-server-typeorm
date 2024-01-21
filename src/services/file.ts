@@ -2,7 +2,7 @@ import multer from 'multer'
 import { AppDataSource } from '../data-source'
 import { File } from '../entity/File'
 import { User } from '../entity/User'
-import { Like } from 'typeorm'
+const path = require('path')
 import { FileDir } from '../entity/FileDir'
 import { randomUUID } from 'crypto'
 import { convertToTreeData } from '../utils'
@@ -21,7 +21,7 @@ export class FileService {
 
   async saveFile(newFile, userId, fileName, parentFolderId?): Promise<void> {
     const user = await this.userRepository.findOne({ where: { user_id: userId } })
-
+    console.log(newFile)
     const file = new File()
     file.id = randomUUID()
     file.userId = user.user_id
@@ -65,8 +65,8 @@ export class FileService {
   async getFiles({ userId, dirId, page, pageSize }) {
     const files = await this.FileRepository.find({
       where: {
-        dirId,
-        userId,
+        dirId: dirId,
+        userId: userId,
       },
       // order: {
       //   id: 'DESC',
@@ -75,5 +75,29 @@ export class FileService {
       // take: pageSize,
     })
     return files
+  }
+
+  async deleteFile({ id, filePath }, res) {
+    const fs = require('fs')
+    await fs.unlink(filePath, (error) => {
+      if (error) {
+        console.error(error)
+        return res.status(500).json({ message: 'Error deleting file' })
+      } else {
+        return res.status(200).json({ message: 'File deleted successfully' })
+      }
+    })
+    const file = await this.FileRepository.findOne({
+      where: {
+        id: id,
+      },
+    })
+    await this.FileRepository.remove(file)
+    return
+  }
+
+  async download({ path }) {
+    const filePath = path
+    return require('fs').createReadStream(filePath)
   }
 }
