@@ -21,7 +21,6 @@ export class FileService {
 
   async saveFile(newFile, userId, fileName, parentFolderId?): Promise<void> {
     const user = await this.userRepository.findOne({ where: { user_id: userId } })
-    console.log(newFile)
     const file = new File()
     file.id = randomUUID()
     file.userId = user.user_id
@@ -79,14 +78,7 @@ export class FileService {
 
   async deleteFile({ id, filePath }, res) {
     const fs = require('fs')
-    await fs.unlink(filePath, (error) => {
-      if (error) {
-        console.error(error)
-        return res.status(500).json({ message: 'Error deleting file' })
-      } else {
-        return res.status(200).json({ message: 'File deleted successfully' })
-      }
-    })
+    await fs.unlink(filePath, (error) => {})
     const file = await this.FileRepository.findOne({
       where: {
         id: id,
