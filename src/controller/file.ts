@@ -65,7 +65,7 @@ export const getFiles = async (req: any, res: Response) => {
 export const download = async (req: any, res: Response) => {
   try {
     const fileStream = await fileService.download(req.query)
-    res.setHeader('Content-Disposition', `attachment; filename=${req.query.filename}`)
+    res.setHeader('Content-Disposition', `attachment; filename=${encodeURIComponent(req.query.filename)}`)
     res.setHeader('Content-Type', 'application/octet-stream')
     fileStream.pipe(res)
   } catch (error) {
