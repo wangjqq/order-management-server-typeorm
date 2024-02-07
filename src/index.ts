@@ -6,6 +6,9 @@ import orderRoutes from './routers/order'
 import fileRoutes from './routers/file'
 import productRoutes from './routers/product'
 import customerRoutes from './routers/customer'
+import systemRoutes from './routers/system'
+import { startAutoInsertOsData } from './controller/system'
+import './utils/schedule'
 
 function initializeAppDataSource() {
   return AppDataSource.initialize()
@@ -21,6 +24,9 @@ function initializeAppDataSource() {
       app.use('/file', fileRoutes)
       app.use('/product', productRoutes)
       app.use('/customer', customerRoutes)
+      app.use('/system', systemRoutes)
+
+   
 
       let server
 
