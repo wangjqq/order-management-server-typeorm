@@ -1,17 +1,29 @@
+import si from 'systeminformation'
 import { AppDataSource } from '../data-source'
 import { OsData } from '../entity/OsData'
-const os = require('os')
 
 export class OsDataService {
   private osDataRepository = AppDataSource.getRepository(OsData)
 
   // 定义一个方法，用来获取 os 模块的数据，并创建一个 OsData 实例
-  getOsData() {
+  async getOsData() {
+    const valueObject = {
+      system: '*',
+      cpu: 'manufacturer,brand,speed,speedMin,speedMax,cores,physicalCores,performanceCores,efficiencyCores,virtualization,cache',
+      cpuCurrentSpeed: '*',
+      cpuTemperature: '*',
+      mem: '*',
+      graphics: '*',
+      osInfo: '*',
+      versions: '*',
+      users: '*',
+      currentLoad: '*',
+      fullLoad: '*',
+      processes: 'unknown',
+      fsSize: '*',
+    }
     const osData = new OsData()
-    osData.totalMemory = os.totalmem()
-    osData.freeMemory = os.freemem()
-    osData.cpus = os.cpus()
-    osData.createdAt = new Date()
+    osData.osData = await si.get(valueObject)
     return osData
   }
 
@@ -28,7 +40,7 @@ export class OsDataService {
   // 定义一个方法，用来每隔一定时间（例如 10 秒），自动插入 os 数据到数据库
   async autoInsertOsData() {
     // 获取 os 数据
-    const osData = this.getOsData()
+    const osData = await this.getOsData()
     // 插入到数据库
     await this.osDataRepository.save(osData)
   }
@@ -46,18 +58,6 @@ export class OsDataService {
     if (to) {
       where.createdAt = { $lte: to }
     }
-    const sysInfo = {
-      arch: os.arch(),
-      homedir: os.homedir(),
-      hostname: os.hostname(),
-      machine: os.machine,
-      networkInterfaces: os.networkInterfaces(),
-      platform: os.platform(),
-      release: os.release(),
-      type: os.type(),
-      uptime: os.uptime(),
-      version: os.version(),
-    }
 
     // 查询数据库
     const [infoList, total] = await this.osDataRepository
@@ -69,7 +69,6 @@ export class OsDataService {
       .getManyAndCount() // 获取查询结果和总条数
 
     return {
-      sysInfo,
       infoList,
       total, // 总条数
       size, // 每页条数

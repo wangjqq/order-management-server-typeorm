@@ -26,8 +26,6 @@ function initializeAppDataSource() {
       app.use('/customer', customerRoutes)
       app.use('/system', systemRoutes)
 
-   
-
       let server
 
       function startServer() {
@@ -55,7 +53,7 @@ function initializeAppDataSource() {
       console.log(error)
       setTimeout(() => {
         initializeAppDataSource()
-      }, 1000)
+      }, 5000)
     })
 }
 

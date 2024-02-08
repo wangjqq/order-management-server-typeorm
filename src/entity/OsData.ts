@@ -1,3 +1,5 @@
+import { CreateDateColumn } from 'typeorm'
+
 const { Entity, PrimaryGeneratedColumn, Column } = require('typeorm')
 
 @Entity()
@@ -5,15 +7,9 @@ export class OsData {
   @PrimaryGeneratedColumn()
   id: string
 
-  @Column()
-  totalMemory: string
+  @Column({ nullable: true })
+  osData: string
 
-  @Column()
-  freeMemory: string
-
-  @Column({ type: 'jsonb' })
-  cpus
-
-  @Column({ type: 'timestamp' })
-  createdAt
+  @CreateDateColumn({ precision: 0, type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(0)' })
+  created_at: Date
 }
