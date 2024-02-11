@@ -46,7 +46,7 @@ export class OsDataService {
   }
 
   // 定义一个方法，用来查询数据库中的 os 数据，根据 id 或者时间范围
-  async queryOsData({ id, from, to, current = 1, size = 10 }: any) {
+  async queryOsData({ id, from, to, current = 1, pageSize = 10 }: any) {
     // 构建查询条件
     const where: any = {}
     if (id) {
@@ -64,16 +64,16 @@ export class OsDataService {
       .createQueryBuilder('osData') // 创建一个 QueryBuilder 对象
       .where(where) // 添加查询条件
       .orderBy('osData.id', 'DESC') // 添加按id倒序排序
-      .skip((current - 1) * size) // 跳过前面的数据
-      .take(size) // 取当前页的数据
+      .skip((current - 1) * pageSize) // 跳过前面的数据
+      .take(pageSize) // 取当前页的数据
       .getManyAndCount() // 获取查询结果和总条数
 
     return {
       infoList,
       total, // 总条数
-      size, // 每页条数
+      pageSize, // 每页条数
       current, // 当前页
-      pages: Math.ceil(total / size), // 总页数
+      pages: Math.ceil(total / pageSize), // 总页数
     }
   }
 }
